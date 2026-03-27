@@ -56,6 +56,7 @@ public class AuthService {
                 token,
                 user.getRole().name(),
                 user.getName(),
+                user.getEmail(), // ← ADD EMAIL HERE (4th parameter)
                 user.getId(),
                 user.getHostelBlock(),
                 user.getRoomNumber()
@@ -82,6 +83,7 @@ public class AuthService {
                 token,
                 user.getRole().name(),
                 user.getName(),
+                user.getEmail(), // ← ADD EMAIL HERE (4th parameter)
                 user.getId(),
                 user.getHostelBlock(),
                 user.getRoomNumber()
