@@ -3,7 +3,7 @@
 > REST API for DormFix Hostel Issue Reporter  
 > Built with Java 21 + Spring Boot 3.5 + MySQL
 
-🔗 Frontend Repository: [dormfix-frontend](https://github.com/Meghana-Naik-92/dormfix-frontend-new)
+🔗 Frontend Repository: [dormfix-frontend](https://github.com/Meghana-Naik-92/dormfix-frontend)
 
 ---
 
