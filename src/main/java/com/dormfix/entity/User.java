@@ -12,19 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
-/*What each annotation does — read this once, you'll see these everywhere:
-
-@Entity — tells JPA "this class is a database table"
-@Table(name = "users") — the table will be named users in MySQL
-@Data — Lombok generates getters, setters, toString automatically (saves ~50 lines)
-@Builder — lets you create objects like User.builder().name("Rahul").build()
-@NoArgsConstructor / @AllArgsConstructor — generates constructors
-@Id + @GeneratedValue — this is the primary key, MySQL auto-increments it
-@Column(unique = true) — no two users can have the same email
-@Enumerated(EnumType.STRING) — stores "STUDENT" or "ADMIN" as text, not a number
-
- */
 @Entity
 @Table(name = "users")
 @Data
@@ -53,4 +42,21 @@ public class User {
     private String hostelBlock;
 
     private String roomNumber;
+
+    private String resetToken;
+
+    private LocalDateTime resetTokenExpiry;
 }
+
+/*What each annotation does — read this once, you'll see these everywhere:
+
+@Entity — tells JPA "this class is a database table"
+@Table(name = "users") — the table will be named users in MySQL
+@Data — Lombok generates getters, setters, toString automatically (saves ~50 lines)
+@Builder — lets you create objects like User.builder().name("Rahul").build()
+@NoArgsConstructor / @AllArgsConstructor — generates constructors
+@Id + @GeneratedValue — this is the primary key, MySQL auto-increments it
+@Column(unique = true) — no two users can have the same email
+@Enumerated(EnumType.STRING) — stores "STUDENT" or "ADMIN" as text, not a number
+
+ */
