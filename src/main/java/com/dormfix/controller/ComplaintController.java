@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,13 @@ public class ComplaintController {
     public ResponseEntity<ComplaintResponse> getComplaintById(
             @PathVariable Long id) {
         return ResponseEntity.ok(complaintService.getComplaintById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ComplaintResponse> updateComplaint(
+            @PathVariable Long id,
+            @Valid @RequestBody ComplaintRequest request) {
+        return ResponseEntity.ok(complaintService.updateComplaint(id, request));
     }
 
     // GET /complaints/stats — student dashboard stat cards

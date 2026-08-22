@@ -64,6 +64,26 @@ public class ComplaintService {
         return mapToResponse(complaint);
     }
 
+    public ComplaintResponse updateComplaint(Long id, ComplaintRequest request) {
+        User student = getCurrentUser();
+        Complaint complaint = complaintRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Complaint not found"));
+
+        if (!complaint.getStudent().getId().equals(student.getId())) {
+            throw new RuntimeException("Access denied");
+        }
+
+        if (complaint.getStatus() != com.dormfix.entity.ComplaintStatus.PENDING) {
+            throw new RuntimeException("Only pending complaints can be updated");
+        }
+
+        complaint.setTitle(request.getTitle());
+        complaint.setDescription(request.getDescription());
+        complaint.setCategory(request.getCategory());
+
+        return mapToResponse(complaintRepository.save(complaint));
+    }
+
     private ComplaintResponse mapToResponse(Complaint complaint) {
         return ComplaintResponse.builder()
                 .id(complaint.getId())

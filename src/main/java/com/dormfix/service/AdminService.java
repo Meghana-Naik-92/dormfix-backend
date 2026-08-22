@@ -25,7 +25,7 @@ public class AdminService {
         // Filter by status only
         if (status != null && !status.isEmpty()
                 && (hostelBlock == null || hostelBlock.isEmpty())) {
-            ComplaintStatus cs = ComplaintStatus.valueOf(status.toUpperCase());
+            ComplaintStatus cs = parseStatus(status);
             complaints = complaintRepository
                     .findByStatusOrderByCreatedAtDesc(cs);
 
@@ -38,7 +38,7 @@ public class AdminService {
             // Filter by both
         } else if (status != null && !status.isEmpty()
                 && hostelBlock != null && !hostelBlock.isEmpty()) {
-            ComplaintStatus cs = ComplaintStatus.valueOf(status.toUpperCase());
+            ComplaintStatus cs = parseStatus(status);
             complaints = complaintRepository
                     .findByStatusAndStudentHostelBlockOrderByCreatedAtDesc(
                             cs, hostelBlock);
@@ -67,15 +67,28 @@ public class AdminService {
                 .orElseThrow(() -> new RuntimeException(
                 "Complaint not found"));
 
+        ComplaintStatus newStatus = parseStatus(status);
+        ComplaintStatus currentStatus = complaint.getStatus();
+
+        if (currentStatus == ComplaintStatus.RESOLVED) {
+            throw new RuntimeException("Cannot change status of a resolved complaint.");
+        }
+        if (currentStatus == ComplaintStatus.IN_PROGRESS && newStatus == ComplaintStatus.PENDING) {
+            throw new RuntimeException("Cannot move an in-progress complaint back to pending.");
+        }
+
+        complaint.setStatus(newStatus);
+
+        return mapToResponse(complaintRepository.save(complaint));
+    }
+
+    private ComplaintStatus parseStatus(String status) {
         try {
-            complaint.setStatus(
-                    ComplaintStatus.valueOf(status.toUpperCase()));
+            return ComplaintStatus.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(
                     "Invalid status. Use: PENDING, IN_PROGRESS, RESOLVED");
         }
-
-        return mapToResponse(complaintRepository.save(complaint));
     }
 
     // Reuse same mapToResponse from ComplaintService
