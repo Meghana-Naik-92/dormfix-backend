@@ -64,7 +64,8 @@ public class SecurityConfig {
 
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "http://127.0.0.1:5173"
+                "http://127.0.0.1:5173",
+                "https://dormfix-frontend.vercel.app" // <-- Add your Vercel frontend URL here!
         ));
         config.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
