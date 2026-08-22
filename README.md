@@ -27,6 +27,9 @@ DormFix is a complaint management system for college hostels. Students report ma
 | BCrypt | Password hashing |
 | Lombok | Boilerplate reduction |
 | Maven | Build & dependency management |
+| Spring Mail | Sending password reset emails |
+| Hibernate Validator | Strict server-side input validation |
+
 
 ---
 
@@ -54,7 +57,8 @@ src/main/java/com/dormfix/
 │   ├── AuthService.java          ← Register + login logic
 │   ├── UserService.java          ← UserDetailsService impl
 │   ├── ComplaintService.java     ← Student complaint logic
-│   └── AdminService.java         ← Admin logic
+│   ├── AdminService.java         ← Admin logic
+│   └── PasswordResetService.java ← Email sending & reset token logic
 ├── dto/
 │   ├── RegisterRequest.java
 │   ├── LoginRequest.java
@@ -105,6 +109,9 @@ src/main/java/com/dormfix/
 |---|---|---|
 | POST | `/auth/register` | Register student or admin |
 | POST | `/auth/login` | Login, receive JWT token |
+| POST | `/auth/forgot-password` | Request a password reset email |
+| POST | `/auth/reset-password`  | Reset password using email token |
+
 
 ### Student (JWT + STUDENT role required)
 | Method | Endpoint | Description |
@@ -113,6 +120,7 @@ src/main/java/com/dormfix/
 | GET | `/complaints/my` | Get my complaints |
 | GET | `/complaints/{id}` | Get complaint detail |
 | GET | `/complaints/stats` | Get my stats |
+| PUT  | `/complaints/{id}`      | Edit a complaint (only if PENDING) |
 
 ### Admin (JWT + ADMIN role required)
 | Method | Endpoint | Description |
@@ -227,6 +235,9 @@ Copy the token from the response and use it in Postman:
 - **Ownership check** — students can only access their own complaints, verified server-side
 - **Global exception handler** — all errors return consistent JSON structure
 - **Spring Data JPA** — query methods auto-generate SQL from method names
+- **Server-Side Validation** — strict `@Valid` constraints on registration and incoming requests to ensure data integrity
+- **Strict State Machine** — complaint statuses are strictly validated to only move forward (PENDING → IN_PROGRESS → RESOLVED)
+- **Secure Password Reset** — token-based secure password recovery via automated emails
 
 ---
 
